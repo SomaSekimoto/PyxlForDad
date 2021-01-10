@@ -22,7 +22,7 @@ for col in tables:
     if cell is None:
       print(index)
       print(num)
-      coll[index] = num[0]
+      col[index] = num[0]
       num.pop(0)
 print(tables)
 wb.save('Book1.xlsx')
