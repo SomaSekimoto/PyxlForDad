@@ -60,19 +60,5 @@ for index, col in enumerate(cell_ranges):
 
   tables.append(col_vals)
 print(tables)
-# for col in tables:
-#   num = [1,2,3,4,5,6,7,8,9,10]
-#   random.shuffle(num)
-#   for index, cell in enumerate(col):
-#     if cell is None:
-#       print(index)
-#       print(num)
-#       col[index] = num[0]
-#       num.pop(0)
-# print(tables)
-# for index, col in enumerate(tables):
-#   for i, c in enumerate(col):
-#     copy_sheet.cell(i + 1, index + 1, c)
-# copy_sheet.move_range("A1:F6", rows=20, cols=20, translate=False)
 wb.save('Book1.xlsx')
 
