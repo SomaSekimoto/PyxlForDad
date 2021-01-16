@@ -8,57 +8,70 @@ sheet = wb[sheet_names[0]]
 copy_sheet = wb.copy_worksheet(sheet)
 now = datetime.datetime.now()
 copy_sheet.title = 'NewShift' + now.strftime(f'%Y%m%d%H%M%S')
-tables = []
-cell_ranges = copy_sheet.iter_cols(min_row=5, max_row=16, min_col=6, max_col=33)
-for index, col in enumerate(cell_ranges):
-  num = [1,2,3,4,5,6,7,8,9,10]
-  random.shuffle(num)
-  if index == 1:
-    array = []
-    print(len(array))
-    while len(array) < 10:
-      # print(tables[index - 1])
-      for i, cell in enumerate(tables[index - 1]):
-        if cell == num[i]:
-          print('a')
-          random.shuffle(num)
-          array = []
-          continue
-        else:
-          print('b')
-          array.append(0)
-  elif index > 1:
-    while len(array) < 10:
-      for i, cell in enumerate(tables[index - 1]):
-        if cell == num[i]:
-          print('c')
-          random.shuffle(num)
-          array = []
-          continue
-        else:
-          print('d')
-          array.append(0)
-      for i, cell in enumerate(tables[index - 2]):
-        if cell == num[i]:
-          print('e')
-          random.shuffle(num)
-          array = []
-          continue
-        else:
-          print('f')
-          array.append(0)
-
+original_lists = []
+col_lists = copy_sheet.iter_cols(min_row=5, max_row=16, min_col=6, max_col=33)
+for index, col in enumerate(col_lists):
   col_vals = []
   for i, cell in enumerate(col):
-    print(num)
-    if len(num) > 0 and cell.value is None:
-      print(cell.value)
-      cell.value = num[0]
-      col_vals.append(cell.value)
-      num.pop(0)
+    col_vals.append(cell.value)
+  original_lists.append(col_vals)
+print(original_lists)
 
+result_lists = []
+for index, col in enumerate(original_lists):
+  num = [1,2,3,4,5,6,7,8,9,10]
+  random.shuffle(num)
+  count = 0
+  col_vals = []
+  if index >= 1:
+    while count < 12:
+      for i, cell in enumerate(result_lists[index - 1]):
+        if index == 1:
+          if col[i] != None:
+            count += 1
+            col_vals.append(col[i])
+          else:
+            if cell == num[0]:
+              num = [1,2,3,4,5,6,7,8,9,10]
+              random.shuffle(num)
+              count = 0
+              col_vals = []
+              break
+            else:
+              count += 1
+              col_vals.append(num[0])
+              num.pop(0)
+        if index > 1:
+          if col[i] != None:
+            count += 1
+            col_vals.append(col[i])
+          else:
+            if num[0] == cell or num[0] == result_lists[index - 2][i]:
+              num = [1,2,3,4,5,6,7,8,9,10]
+              random.shuffle(num)
+              count = 0
+              col_vals = []
+              break
+            else:
+              count += 1
+              col_vals.append(num[0])
+              num.pop(0)
+  else:
+    for i, cell in enumerate(col):
+      if len(num) > 0 and cell == None:
+        col_vals.append(num[0])
+        num.pop(0)
+      else:
+        col_vals.append(cell)
+  result_lists.append(col_vals)
 
-  tables.append(col_vals)
-print(tables)
+print('result_lists')
+print(result_lists)
+
+col_lists = copy_sheet.iter_cols(min_row=5, max_row=16, min_col=6, max_col=33)
+
+for index, col in enumerate(col_lists):
+  for i, cell in enumerate(col):
+    cell.value = result_lists[index][i]
+
 wb.save('Book1.xlsx')
-
