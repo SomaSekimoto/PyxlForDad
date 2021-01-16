@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import random
 import datetime
 
-wb = load_workbook(filename = 'Book1.xlsx')
+wb = load_workbook(filename = './Book1.xlsx')
 sheet_names = wb.sheetnames
 sheet = wb[sheet_names[0]]
 copy_sheet = wb.copy_worksheet(sheet)
