@@ -3,7 +3,7 @@ files/
 __pycache__/
 .DS_Store
 node_modules
-/dist
+front/dist
 
 
 # local env files
