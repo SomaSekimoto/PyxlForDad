@@ -5,8 +5,9 @@ import datetime
 
 
 
-def create_shift(event, context):
-  wb = load_workbook(filename = './files/Book1.xlsx')
+def create_shift(file):
+  wb = load_workbook(filename = file)
+  print(wb)
   sheet_names = wb.sheetnames
   sheet = wb[sheet_names[0]]
   copy_sheet = wb.copy_worksheet(sheet)
@@ -63,7 +64,7 @@ def create_shift(event, context):
     for i, cell in enumerate(col):
       cell.value = result_lists[index][i]
 
-  wb.save('./files/Book1.xlsx')
+  wb.save(file)
 
 if __name__ == '__main__':
   main(None, None)

@@ -2,9 +2,8 @@
   <div>
     <h1>{{ msg }}</h1>
     <p>拡張子.xlsxのファイル</p>
-    <input type="file" @change="readFile" />
+    <input type="file" @change="readFile" accept=".xlsx, .xls" />
   </div>
-  <!-- <button style="margin: 3em;" @click="uploadFile">アップロード</button> -->
 </template>
 
 <script>
@@ -14,7 +13,6 @@ export default {
   props: {
     msg: String
   },
-  data: () => ({}),
   methods: {
     readFile(e) {
       const reader = new FileReader();
@@ -28,15 +26,25 @@ export default {
       const path = "http://localhost:5000/upload";
       const data = new FormData();
       data.append("file", file);
-      // const headers = { "content-type": "multipart/form-data" };
+      const headers = { responseType: "blob", dataType: "binary" };
       axios
-        // .post(path, data, { headers })
-        .post(path, data)
+        .post(path, data, headers)
         .then(res => {
           console.log("res");
           console.log(res);
+          const type =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+          const fileURL = window.URL.createObjectURL(
+            new Blob([res.data], { type: type })
+          );
+          const fileLink = document.createElement("a");
+          fileLink.href = fileURL;
+          const dateString = new Date().toLocaleDateString("ja-jp");
+          fileLink.setAttribute("download", dateString + ".xlsx");
+          fileLink.click();
         })
         .catch(err => {
+          console.log("err");
           console.log(err);
         });
     }
